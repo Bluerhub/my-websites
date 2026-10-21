@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101f36"><title>Lernportal · Meine Kurse</title>
+<style>
+:root{--bg:#f4f6fb;--white:#fff;--ink:#132238;--muted:#64748b;--border:#dfe5ee;--red:#c21d38;--blue:#244c83;--shadow:0 8px 30px rgba(20,34,56,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #4d8bdb;outline-offset:3px}
+.hero{background:linear-gradient(120deg,#10223c,#203a60);color:white;padding:38px 22px 66px}.wrap{max-width:1010px;margin:auto}.hero .top{display:flex;gap:15px;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center;font-weight:800;letter-spacing:.02em}.logo{width:39px;height:39px;border-radius:12px;background:var(--red);display:grid;place-items:center;font-size:22px}.hero h1{font-size:clamp(29px,5vw,45px);margin:33px 0 5px;line-height:1.2}.hero p{color:#cdd8e8;margin:5px 0}.tag{border:1px solid #ffffff45;border-radius:25px;padding:5px 12px;font-size:12px;color:#e4ebf6}main{max-width:1010px;margin:-35px auto 60px;padding:0 18px;position:relative}.surface{background:var(--white);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:20px;padding:25px;margin-bottom:20px}.crumb{display:flex;gap:9px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:18px}.crumb button{border:none;background:none;color:var(--blue);padding:4px}.crumb strong{color:var(--ink)}.title{font-size:24px;margin:0}.sub{color:var(--muted);margin:5px 0 23px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:15px}.tile{background:#fff;border:1px solid var(--border);padding:21px;text-align:left;border-radius:17px;transition:transform .15s,border-color .15s,box-shadow .15s;min-height:170px;display:flex;flex-direction:column;align-items:flex-start;width:100%}.tile:hover{transform:translateY(-2px);border-color:#a1b4d0;box-shadow:var(--shadow)}.tile .icon{width:48px;height:48px;background:#eaf0fb;color:#244c83;border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:13px}.tile strong{font-size:18px}.tile p{margin:6px 0;color:var(--muted);font-size:14px}.tile .arrow{margin-top:auto;color:var(--red);font-size:13px;font-weight:700}.tile.disabled{background:#f7f9fc;cursor:default;opacity:.65}.tile.disabled:hover{transform:none;box-shadow:none;border-color:var(--border)}.resource{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:18px;border:1px solid var(--border);border-radius:15px;margin:12px 0;flex-wrap:wrap}.resource h3{margin:0;font-size:17px}.resource p{margin:4px 0 0;color:var(--muted);font-size:14px}.open{background:var(--red);color:white;border:none;border-radius:10px;padding:10px 15px;font-weight:700;display:inline-block}.open:hover{background:#a21930}.empty{background:#f6f8fc;padding:24px;border-radius:14px;color:var(--muted)}.tip{font-size:14px;color:var(--muted);padding:16px 4px;line-height:1.6}footer{max-width:1010px;margin:auto;padding:10px 18px 35px;color:var(--muted);font-size:13px}#content{min-height:240px}@media(max-width:520px){.hero{padding-top:25px}.surface{padding:19px}.resource .open{width:100%;text-align:center}.tag{display:none}}
+</style>
+</head><body>
+<header class="hero"><div class="wrap"><div class="top"><div class="brand"><span class="logo" aria-hidden="true">◈</span> Lernportal</div><span class="tag">Meine interaktiven Lernmaterialien</span></div><h1>Was möchtest du heute lernen?</h1><p>Kurs auswählen · Lernbereich öffnen · Übung starten</p></div></header>
+<main><section class="surface"><div class="crumb" id="breadcrumb"></div><div id="content"></div></section><div class="tip">Deine Kursmaterialien liegen in diesem GitHub-Repository. Diese Startseite benötigt keine Anmeldung. Der Lernfortschritt einzelner Übungen wird ggf. nur lokal im jeweiligen Browser gespeichert.</div></main>
+<footer>Lernportal · Persönliche Lernübersicht</footer>
+<script>
+'use strict';
+// Neue Kurse und Webseiten später einfach in dieser Liste ergänzen.
+const courses=[
+ {id:'amsa',name:'Angewandtes Maschinelles Sehen I',short:'aMSA I',description:'Optik, Bilderfassung, Beleuchtung und industrielle Bildverarbeitung',icon:'◉',areas:[
+  {id:'uebung',name:'Übungen',description:'Interaktive Selbsttests und Fachwortkarten',icon:'✎',items:[
+   {title:'Übung 01 · Optische Grundlagen',description:'18 Prüfungsfragen · Zuordnungsaufgaben · 65 Fachwortkarten',url:'amsa/uebung/aMSA_I_Uebung_1_Selbsttest_fixed.html'}
+  ]},
+  {id:'vor',name:'Vorlesung',description:'Vorlesungsunterlagen, Zusammenfassungen und Tests',icon:'▤',items:[]}
+ ]}
+];
+const content=document.getElementById('content');const breadcrumb=document.getElementById('breadcrumb');
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function tile(item,action,count){return `<button class="tile" type="button" data-go="${esc(action)}"><span class="icon" aria-hidden="true">${esc(item.icon)}</span><strong>${esc(item.name)}</strong><p>${esc(item.description)}</p><span class="arrow">${count} · Weiter →</span></button>`;}
+function crumb(label,hash){return `<button type="button" data-go="${esc(hash)}">${esc(label)}</button><span>/</span>`;}
+function render(){const path=decodeURIComponent(location.hash.slice(1)).split('/').filter(Boolean);const c=courses.find(x=>x.id===path[0]);const a=c?.areas.find(x=>x.id===path[1]);
+ let trail=path.length?crumb('Alle Kurse','#/'): '<strong>Alle Kurse</strong>';
+ if(c)trail+=a?crumb(c.short,'#/'+c.id):`<strong>${esc(c.short)}</strong>`;
+ if(a)trail+=`<strong>${esc(a.name)}</strong>`;
+ breadcrumb.innerHTML=trail;
+ if(!c){content.innerHTML=`<h2 class="title">Meine Kurse</h2><p class="sub">Wähle ein Fach aus, um die Lernbereiche zu öffnen.</p><div class="grid">${courses.map(x=>tile(x,'#/'+x.id,x.areas.length+' Lernbereiche')).join('')}</div>`;return;}
+ if(!a){content.innerHTML=`<h2 class="title">${esc(c.name)}</h2><p class="sub">Wähle Vorlesung oder Übung.</p><div class="grid">${c.areas.map(x=>tile(x,'#/'+c.id+'/'+x.id,x.items.length+' Lernseiten')).join('')}</div>`;return;}
+ content.innerHTML=`<h2 class="title">${esc(c.short)} · ${esc(a.name)}</h2><p class="sub">${esc(a.description)}</p>`+(a.items.length?a.items.map((x,i)=>`<div class="resource"><div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></div><a class="open" href="${esc(x.url)}">Jetzt öffnen ↗</a></div>`).join(''):`<div class="empty">Hier sind noch keine Lernseiten hinterlegt. Später kannst du neue HTML-Dateien in diesem Bereich hinzufügen.</div>`);
+}
+document.addEventListener('click',e=>{let b=e.target.closest('[data-go]');if(b){location.hash=b.dataset.go;render();}});window.addEventListener('hashchange',render);render();
+</script>
+</body></html>
